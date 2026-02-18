@@ -70,7 +70,11 @@ logs/
 *.bak
 
 # Project specific
+.worktrees/
 *.pid
 *.seed
 *.pid.lock
 
+.cursor/
+.windsurf/
+.agent/
