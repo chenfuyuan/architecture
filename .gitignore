@@ -75,6 +75,7 @@ logs/
 *.seed
 *.pid.lock
 
-.cursor/
+.cursor/*
+!.cursor/rules/
 .windsurf/
 .agent/
