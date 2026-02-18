@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
+
 from .query import Query
 
-Result = TypeVar("Result")
+Q = TypeVar("Q", bound=Query)
+R = TypeVar("R")
 
 
-class QueryHandler(ABC, Generic[Query, Result]):
+class QueryHandler(ABC, Generic[Q, R]):
     @abstractmethod
-    async def handle(self, query: Query) -> Result:
+    async def handle(self, query: Q) -> R:
         pass
