@@ -14,3 +14,11 @@ repos:
           - pydantic
           - sqlalchemy[mypy]
         args: [--config-file=pyproject.toml]
+
+  - repo: local
+    hooks:
+      - id: architecture-check
+        name: architecture-check
+        entry: make architecture-check
+        language: system
+        pass_filenames: false
