@@ -1,28 +1,46 @@
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
+
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
-from src.app.config import settings
-from src.app.interfaces.dependencies import get_logger
-from src.app.interfaces.exception_handler import (
+
+from app.config import settings
+from app.interfaces.exception_handler import (
     domain_exception_handler,
     general_exception_handler,
     validation_exception_handler,
 )
-from src.app.interfaces.middleware import setup_middleware
-from src.app.interfaces.response import ApiResponse
-from src.app.shared_kernel.domain.exception import DomainException
-from src.app.shared_kernel.infrastructure.logging import configure_logging
+from app.interfaces.middleware import setup_middleware
+from app.interfaces.response import ApiResponse
+from app.shared_kernel.application.mediator import Mediator
+from app.shared_kernel.domain.exception import DomainException
+from app.shared_kernel.infrastructure.database import Database
+from app.shared_kernel.infrastructure.logging import configure_logging, get_logger
 
 logger = get_logger(__name__)
+
+
+def _register_handlers(mediator: Mediator) -> None:
+    """Register all module command/query handlers with the mediator."""
+    pass
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     configure_logging()
     logger.info("Application starting up", app_name=settings.APP_NAME, env=settings.APP_ENV)
+
+    db = Database(url=settings.DATABASE_URL, echo=settings.APP_DEBUG)
+    app.state.db = db
+
+    mediator = Mediator()
+    _register_handlers(mediator)
+    app.state.mediator = mediator
+
     yield
-    logger.info("Application shutting down")
+
+    await db.dispose()
+    logger.info("Application shut down")
 
 
 app = FastAPI(
