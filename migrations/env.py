@@ -1,11 +1,23 @@
 import asyncio
+import sys
+from pathlib import Path
+
 from logging.config import fileConfig
+
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
+
 from alembic import context
-from src.app.config import settings
-from src.app.shared_kernel.infrastructure.database import Base
+
+# Ensure src is on path for app imports when running alembic from project root
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
+from app.config import settings
+from app.shared_kernel.infrastructure.database import Base
+
+# Import all models so Alembic can detect them
+from app.modules.example.infrastructure.models.note_model import NoteModel  # noqa: F401
 
 config = context.config
 

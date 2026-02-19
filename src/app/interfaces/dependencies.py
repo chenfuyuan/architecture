@@ -1,11 +1,21 @@
-from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.app.shared_kernel.infrastructure.database import get_session
-from src.app.shared_kernel.infrastructure.logging import get_logger
+from collections.abc import AsyncGenerator
 
-logger = get_logger(__name__)
+from fastapi import Request
+
+from app.shared_kernel.application.mediator import Mediator
+from app.shared_kernel.infrastructure.database import Database
+from app.shared_kernel.infrastructure.sqlalchemy_unit_of_work import SqlAlchemyUnitOfWork
 
 
-async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
-    async for session in get_session():
-        yield session
+def get_db(request: Request) -> Database:
+    return request.app.state.db
+
+
+def get_mediator(request: Request) -> Mediator:
+    return request.app.state.mediator
+
+
+async def get_uow(request: Request) -> AsyncGenerator[SqlAlchemyUnitOfWork, None]:
+    db: Database = request.app.state.db
+    async with SqlAlchemyUnitOfWork(db.session_factory) as uow:
+        yield uow

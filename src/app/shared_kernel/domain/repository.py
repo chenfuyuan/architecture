@@ -1,22 +1,21 @@
 from abc import ABC, abstractmethod
-from typing import Generic, List, Optional
-from .entity import Id
+from typing import Generic, TypeVar
+
 from .aggregate_root import AggregateRoot
 
+AR = TypeVar("AR", bound=AggregateRoot)
+ID = TypeVar("ID")
 
-class Repository(ABC, Generic[AggregateRoot, Id]):
+
+class Repository(ABC, Generic[AR, ID]):
     @abstractmethod
-    async def save(self, aggregate: AggregateRoot) -> None:
+    async def find_by_id(self, id: ID) -> AR | None:
         pass
 
     @abstractmethod
-    async def find_by_id(self, id: Id) -> Optional[AggregateRoot]:
+    async def save(self, aggregate: AR) -> None:
         pass
 
     @abstractmethod
-    async def find_all(self) -> List[AggregateRoot]:
-        pass
-
-    @abstractmethod
-    async def delete(self, aggregate: AggregateRoot) -> None:
+    async def delete(self, aggregate: AR) -> None:
         pass

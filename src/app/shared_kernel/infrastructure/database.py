@@ -1,27 +1,32 @@
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.orm import declarative_base
-
-from src.app.config import settings
-
-Base = declarative_base()
-
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=settings.APP_DEBUG,
-    future=True,
-)
-
-async_session_maker = async_sessionmaker(
-    engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
+from sqlalchemy.orm import DeclarativeBase
 
 
-async def get_session() -> AsyncSession:
-    async with async_session_maker() as session:
-        yield session
+class Base(DeclarativeBase):
+    pass
+
+
+class Database:
+    def __init__(self, url: str, echo: bool = False) -> None:
+        self._engine = create_async_engine(url, echo=echo)
+        self._session_factory = async_sessionmaker(
+            self._engine,
+            class_=AsyncSession,
+            expire_on_commit=False,
+        )
+
+    @property
+    def session_factory(self) -> async_sessionmaker[AsyncSession]:
+        return self._session_factory
+
+    async def check_connection(self) -> None:
+        async with self._engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+
+    async def dispose(self) -> None:
+        await self._engine.dispose()

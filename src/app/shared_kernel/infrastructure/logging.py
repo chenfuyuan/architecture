@@ -3,15 +3,16 @@ import sys
 from typing import Any
 
 import structlog
-from src.app.config import settings
+
+from app.config import settings
 
 
 def configure_logging() -> None:
+    level = getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO)
+
     if settings.APP_ENV == "development":
-        level = logging.DEBUG
-        renderer = structlog.dev.ConsoleRenderer()
+        renderer: structlog.types.Processor = structlog.dev.ConsoleRenderer()
     else:
-        level = logging.INFO
         renderer = structlog.processors.JSONRenderer()
 
     logging.basicConfig(
