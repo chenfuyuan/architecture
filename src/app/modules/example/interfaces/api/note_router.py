@@ -24,9 +24,7 @@ async def create_note(
 ) -> ApiResponse[dict]:
     repo = SqlAlchemyNoteRepository(uow.session)
     handler = CreateNoteHandler(repository=repo)
-    note_id = await handler.handle(
-        CreateNoteCommand(title=body.title, content=body.content)
-    )
+    note_id = await handler.handle(CreateNoteCommand(title=body.title, content=body.content))
     await uow.commit()
     return ApiResponse.success(data={"id": str(note_id)}, message="Note created")
 
