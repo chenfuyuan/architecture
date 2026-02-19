@@ -1,10 +1,12 @@
 import pytest
-import asyncio
-from typing import AsyncGenerator, Generator
+from unittest.mock import AsyncMock
+
+from app.shared_kernel.application.unit_of_work import UnitOfWork
 
 
-@pytest.fixture(scope="session")
-def event_loop() -> Generator:
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+@pytest.fixture
+def mock_uow() -> AsyncMock:
+    uow = AsyncMock(spec=UnitOfWork)
+    uow.__aenter__ = AsyncMock(return_value=uow)
+    uow.__aexit__ = AsyncMock(return_value=None)
+    return uow
