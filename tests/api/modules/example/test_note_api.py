@@ -1,5 +1,4 @@
 """Example 模块 notes 接口测试：创建、查询."""
-import pytest
 from httpx import AsyncClient
 
 
