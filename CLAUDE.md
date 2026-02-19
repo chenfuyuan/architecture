@@ -85,4 +85,5 @@ make ci
 
 - `docs/plans/` — 设计文档和实施计划
 - `docs/scaffold-new-module.md` — 新模块脚手架（make new-module）
+- `docs/using-skeleton-for-new-project.md` — 从骨架创建新项目（Git 初始化与两种用法）
 - `.cursor/rules/` — Cursor 分场景规则（架构、测试、工作流）

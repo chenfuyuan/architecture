@@ -45,6 +45,13 @@ make migrate
 make dev
 ```
 
+## 使用本骨架创建新项目
+
+要从本骨架开始一个**新项目**（独立 git 历史与远程），请参阅 **[docs/using-skeleton-for-new-project.md](docs/using-skeleton-for-new-project.md)**（中文）。其中说明：
+
+- **方式一（推荐）：** GitHub「Use this template」— 无需 re-init git。
+- **方式二：** Clone 本仓库后删除 `.git`、`git init`、首次提交并添加新项目的 `origin`。
+
 ## Project Structure
 
 ```
