@@ -1,36 +1,78 @@
-# DDD FastAPI Project Skeleton
+# DDD + FastAPI Project Skeleton
 
-基于 DDD 思想的 FastAPI 项目骨架。
+A production-ready project skeleton based on **Domain-Driven Design (DDD)** and **Clean Architecture** principles.
 
-## 技术栈
+## Tech Stack
 
-- FastAPI
-- SQLAlchemy (异步)
-- PostgreSQL
-- Alembic
-- conda
-- Docker Compose
+- **Web Framework:** FastAPI
+- **Database:** PostgreSQL + SQLAlchemy (async)
+- **Migrations:** Alembic
+- **Config:** pydantic-settings
+- **Logging:** structlog
+- **Testing:** pytest
+- **Linting:** ruff + mypy
 
-## 快速开始
+## Architecture
 
-### 使用 conda
+```
+interfaces → application → domain ← infrastructure
+```
+
+| Layer | Responsibility |
+|-------|---------------|
+| **Domain** | Entities, Value Objects, Aggregate Roots, Repository interfaces, Domain Events |
+| **Application** | Commands, Queries, Handlers, Unit of Work, Mediator |
+| **Infrastructure** | SQLAlchemy models, Repository implementations, Database config |
+| **Interfaces** | FastAPI routes, middleware, exception handling |
+
+## Quick Start
 
 ```bash
-# 创建环境
-conda env create -f environment.yml
+# Clone and install
+git clone <repo-url> && cd <project>
+pip install -e ".[dev]"
 
-# 激活环境
-conda activate app
-
-# 复制环境变量
+# Set up environment
 cp .env.example .env
 
-# 启动开发服务器
-uvicorn app.interfaces.main:app --reload
+# Start services
+make docker-up
+
+# Run migrations
+make migrate
+
+# Start dev server
+make dev
 ```
 
-### 使用 Docker Compose
+## Project Structure
+
+```
+src/app/
+├── shared_kernel/      # Shared base classes
+│   ├── domain/         # Entity, ValueObject, AggregateRoot, Repository, DomainEvent
+│   ├── application/    # Command, Query, Handlers, UnitOfWork, Mediator
+│   └── infrastructure/ # Database, SqlAlchemy implementations
+├── modules/            # Business modules (one per bounded context)
+│   └── example/        # Example module demonstrating full CQRS flow
+└── interfaces/         # FastAPI app entry point
+```
+
+## Development
 
 ```bash
-docker-compose up --build
+make test           # Run tests
+make lint           # Run linter
+make format         # Format code
+make type-check     # Run mypy
+make migrate-create msg="add users table"  # Create migration
 ```
+
+## Adding a New Module
+
+1. Create `src/app/modules/<name>/domain/` — entities, events, repository interface
+2. Create `src/app/modules/<name>/application/` — commands, queries, handlers
+3. Create `src/app/modules/<name>/infrastructure/` — models, repository implementation
+4. Create `src/app/modules/<name>/interfaces/api/` — router, requests, responses
+5. Register handlers in `src/app/interfaces/main.py:_register_handlers()`
+6. Include router in `main.py`
