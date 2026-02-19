@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
+
 from app.shared_kernel.application.command import Command
 from app.shared_kernel.application.command_handler import CommandHandler
 from app.shared_kernel.application.mediator import Mediator

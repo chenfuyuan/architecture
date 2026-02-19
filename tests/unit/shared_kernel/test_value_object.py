@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
+
 from app.shared_kernel.domain.exception import ValidationException
 from app.shared_kernel.domain.value_object import ValueObject
 
