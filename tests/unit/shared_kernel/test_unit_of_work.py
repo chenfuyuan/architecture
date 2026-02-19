@@ -1,6 +1,6 @@
 import pytest
 
-from app.shared_kernel.application.unit_of_work import UnitOfWork
+from app.shared_kernel.domain.unit_of_work import UnitOfWork
 
 
 class FakeUnitOfWork(UnitOfWork):
