@@ -15,6 +15,7 @@
   3. 按需修改聚合字段、表名、路由前缀
   4. 运行 make migrate-create msg="add <module> tables"
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,7 +23,6 @@ import re
 import shutil
 import sys
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE = "example"
@@ -54,7 +54,10 @@ def main() -> int:
 
     module_slug = args.name.strip().lower().replace(" ", "-")
     if not re.match(r"^[a-z][a-z0-9_-]*$", module_slug):
-        print("Error: MODULE_SLUG must be lowercase letters, numbers, hyphen/underscore.", file=sys.stderr)
+        print(
+            "Error: MODULE_SLUG must be lowercase letters, numbers, hyphen/underscore.",
+            file=sys.stderr,
+        )
         return 1
     if module_slug == EXAMPLE:
         print("Error: MODULE_SLUG cannot be 'example'.", file=sys.stderr)
@@ -106,7 +109,7 @@ def main() -> int:
     print("  1. Register router and handlers in app/interfaces/main.py")
     print("  2. Register handlers in tests/api/conftest.py _register_handlers()")
     print("  3. Adjust aggregate fields, table name, route prefix if needed")
-    print("  4. make migrate-create msg=\"add " + module_slug + " tables\"")
+    print('  4. make migrate-create msg="add ' + module_slug + ' tables"')
     return 0
 
 

@@ -1,5 +1,4 @@
 import pytest
-
 from app.modules.example.domain.note import Note
 from app.modules.example.domain.note_created import NoteCreated
 
