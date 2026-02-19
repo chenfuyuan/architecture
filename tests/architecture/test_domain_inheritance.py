@@ -1,4 +1,4 @@
-"""Guard: domain classes with entity/value-object semantics must inherit Entity/AggregateRoot or ValueObject."""
+"""Guard: domain entity/value-object semantics must inherit Entity/AggregateRoot or ValueObject."""
 
 import dataclasses
 import importlib
@@ -40,10 +40,7 @@ def _iter_domain_submodules(package_name: str):
 def _has_id(cls: type) -> bool:
     return (
         "id" in getattr(cls, "__annotations__", {})
-        or any(
-            "id" in getattr(b, "__annotations__", {})
-            for b in inspect.getmro(cls)[1:]
-        )
+        or any("id" in getattr(b, "__annotations__", {}) for b in inspect.getmro(cls)[1:])
         or "id" in getattr(cls, "__dataclass_fields__", {})
     )
 
@@ -60,9 +57,7 @@ def _is_entity_semantics(cls: type) -> bool:
         return False
     if not _has_id(cls):
         return False
-    if dataclasses.is_dataclass(cls) and _is_frozen_dataclass(cls):
-        return False
-    return True
+    return not (dataclasses.is_dataclass(cls) and _is_frozen_dataclass(cls))
 
 
 def _is_value_object_semantics(cls: type) -> bool:
@@ -85,9 +80,11 @@ def _skip_class(cls: type) -> bool:
 
     if cls in (Entity, AggregateRoot, ValueObject, DomainEvent):
         return True
-    if issubclass(cls, Repository) or issubclass(cls, DomainEvent) or issubclass(cls, BaseException):
-        return True
-    return False
+    return (
+        issubclass(cls, Repository)
+        or issubclass(cls, DomainEvent)
+        or issubclass(cls, BaseException)
+    )
 
 
 def _collect_domain_classes():
@@ -113,10 +110,11 @@ def test_entity_semantics_inherit_entity_or_aggregate_root() -> None:
             continue
         if not (issubclass(cls, Entity) or issubclass(cls, AggregateRoot)):
             bad.append((cls, mod))
-    assert not bad, (
-        "Domain classes with entity semantics (has id, not frozen) must inherit Entity or AggregateRoot: "
-        + ", ".join(f"{c.__name__} in {m}" for c, m in bad)
+    msg = (
+        "Domain classes with entity semantics (has id, not frozen) must inherit "
+        "Entity or AggregateRoot: " + ", ".join(f"{c.__name__} in {m}" for c, m in bad)
     )
+    assert not bad, msg
 
 
 def test_value_object_semantics_inherit_value_object() -> None:

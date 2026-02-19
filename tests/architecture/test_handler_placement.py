@@ -1,10 +1,8 @@
-"""Guard: CommandHandler subclasses live in application/commands/, QueryHandler in application/queries/."""
+"""Guard: CommandHandler in application/commands/, QueryHandler in application/queries/."""
 
 import importlib
 import inspect
 import pkgutil
-
-import pytest
 
 from app.shared_kernel.application.command_handler import CommandHandler
 from app.shared_kernel.application.query_handler import QueryHandler
@@ -58,20 +56,18 @@ def _collect_handler_classes():
 
 
 def test_command_handlers_live_in_commands_dir() -> None:
-    """CommandHandler subclasses must live under application/commands/ (module path contains .commands.)."""
+    """CommandHandler subclasses must live under application/commands/."""
     command_handlers, _ = _collect_handler_classes()
     bad = [c for c, mod in command_handlers if ".commands." not in mod]
-    assert not bad, (
-        "CommandHandler subclasses must live in application/commands/: "
-        + ", ".join(f"{cls.__name__} ({mod})" for cls, mod in bad)
+    assert not bad, "CommandHandler subclasses must live in application/commands/: " + ", ".join(
+        f"{cls.__name__} ({mod})" for cls, mod in bad
     )
 
 
 def test_query_handlers_live_in_queries_dir() -> None:
-    """QueryHandler subclasses must live under application/queries/ (module path contains .queries.)."""
+    """QueryHandler subclasses must live under application/queries/."""
     _, query_handlers = _collect_handler_classes()
     bad = [c for c, mod in query_handlers if ".queries." not in mod]
-    assert not bad, (
-        "QueryHandler subclasses must live in application/queries/: "
-        + ", ".join(f"{cls.__name__} ({mod})" for cls, mod in bad)
+    assert not bad, "QueryHandler subclasses must live in application/queries/: " + ", ".join(
+        f"{cls.__name__} ({mod})" for cls, mod in bad
     )

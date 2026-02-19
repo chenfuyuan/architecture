@@ -1,4 +1,4 @@
-.PHONY: help dev test lint format type-check ci migrate docker-up docker-down new-module
+.PHONY: help dev test lint format type-check ci migrate docker-up docker-down new-module architecture-check
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -19,10 +19,15 @@ format: ## Format code
 type-check: ## Run type checker
 	mypy src/
 
+architecture-check: ## Run architecture guards (import-linter + pytest arch tests)
+	lint-imports
+	python -m pytest tests/architecture/ -v
+
 ci: ## Run same checks as CI (run before push)
 	ruff check src/ tests/
 	ruff format --check src/ tests/
 	mypy src/
+	$(MAKE) architecture-check
 	python -m pytest tests/ -v
 
 migrate: ## Run database migrations
