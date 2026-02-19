@@ -1,4 +1,4 @@
-.PHONY: help dev test lint format type-check migrate docker-up docker-down
+.PHONY: help dev test lint format type-check migrate docker-up docker-down new-module
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -33,3 +33,6 @@ docker-down: ## Stop Docker services
 
 docker-logs: ## Tail Docker logs
 	docker compose logs -f
+
+new-module: ## Scaffold new DDD module from example (usage: make new-module name=product)
+	python scripts/new_module.py "$(name)"

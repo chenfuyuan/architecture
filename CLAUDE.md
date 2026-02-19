@@ -43,6 +43,7 @@ make format           # ruff format + fix
 make type-check       # mypy src/
 make migrate          # alembic upgrade head
 make migrate-create msg="描述"
+make new-module name=<模块名>  # 从 example 生成新模块脚手架，见 docs/scaffold-new-module.md
 make docker-up        # docker compose up -d --build
 ```
 
@@ -71,4 +72,5 @@ make test && make lint && make type-check
 ## 参考文档
 
 - `docs/plans/` — 设计文档和实施计划
+- `docs/scaffold-new-module.md` — 新模块脚手架（make new-module）
 - `.cursor/rules/` — Cursor 分场景规则（架构、测试、工作流）
