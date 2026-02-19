@@ -4,6 +4,7 @@ from uuid import UUID
 from app.modules.example.domain.note_repository import NoteRepository
 from app.shared_kernel.application.query_handler import QueryHandler
 from app.shared_kernel.domain.exception import NotFoundException
+
 from .get_note import GetNoteQuery
 
 

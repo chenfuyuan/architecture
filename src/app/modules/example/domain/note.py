@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID, uuid4
 
 from app.shared_kernel.domain.aggregate_root import AggregateRoot
+
 from .note_created import NoteCreated
 
 

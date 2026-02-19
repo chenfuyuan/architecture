@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.shared_kernel.infrastructure.sqlalchemy_unit_of_work import SqlAlchemyUnitOfWork
 
@@ -23,5 +23,5 @@ class TestSqlAlchemyUnitOfWork:
 
     async def test_rollback_on_exception(self, session_factory) -> None:
         with pytest.raises(ValueError):
-            async with SqlAlchemyUnitOfWork(session_factory) as uow:
+            async with SqlAlchemyUnitOfWork(session_factory) as _:
                 raise ValueError("boom")

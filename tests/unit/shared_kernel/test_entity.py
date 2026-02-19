@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from app.shared_kernel.domain.entity import Entity, ID
+
+from app.shared_kernel.domain.entity import Entity
 
 
 @dataclass(eq=False)

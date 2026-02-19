@@ -1,5 +1,5 @@
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
@@ -16,7 +16,6 @@ from app.modules.example.application.commands.create_note import CreateNoteComma
 from app.modules.example.application.commands.create_note_handler import CreateNoteHandler
 from app.modules.example.application.queries.get_note import GetNoteQuery
 from app.modules.example.application.queries.get_note_handler import GetNoteHandler
-from app.modules.example.domain.note_repository import NoteRepository
 from app.modules.example.infrastructure.sqlalchemy_note_repository import SqlAlchemyNoteRepository
 from app.modules.example.interfaces.api.note_router import router as note_router
 from app.shared_kernel.application.mediator import Mediator

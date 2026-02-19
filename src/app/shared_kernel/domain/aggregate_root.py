@@ -2,7 +2,7 @@ from abc import ABC
 from dataclasses import dataclass, field
 
 from .domain_event import DomainEvent
-from .entity import Entity, ID
+from .entity import ID, Entity
 
 
 @dataclass(eq=False)

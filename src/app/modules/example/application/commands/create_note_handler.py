@@ -3,6 +3,7 @@ from uuid import UUID
 from app.modules.example.domain.note import Note
 from app.modules.example.domain.note_repository import NoteRepository
 from app.shared_kernel.application.command_handler import CommandHandler
+
 from .create_note import CreateNoteCommand
 
 

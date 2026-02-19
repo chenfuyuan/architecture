@@ -38,7 +38,9 @@ async def validation_exception_handler(
 
     message = "; ".join(error_messages) if error_messages else "Validation error"
     response = ApiResponse.error(code=status.HTTP_422_UNPROCESSABLE_ENTITY, message=message)
-    return JSONResponse(content=response.model_dump(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    return JSONResponse(
+        content=response.model_dump(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+    )
 
 
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
@@ -46,4 +48,6 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
     response = ApiResponse.error(
         code=status.HTTP_500_INTERNAL_SERVER_ERROR, message="Internal server error"
     )
-    return JSONResponse(content=response.model_dump(), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return JSONResponse(
+        content=response.model_dump(), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+    )

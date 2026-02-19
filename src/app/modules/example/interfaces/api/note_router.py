@@ -8,6 +8,7 @@ from app.modules.example.application.commands.create_note import CreateNoteComma
 from app.modules.example.application.queries.get_note import GetNoteQuery
 from app.shared_kernel.application.mediator import Mediator
 from app.shared_kernel.infrastructure.sqlalchemy_unit_of_work import SqlAlchemyUnitOfWork
+
 from .requests.create_note_request import CreateNoteRequest
 from .responses.note_response import NoteResponse
 
@@ -31,4 +32,6 @@ async def get_note(
     mediator: Mediator = Depends(get_mediator),
 ) -> ApiResponse[NoteResponse]:
     result = await mediator.query(GetNoteQuery(note_id=note_id))
-    return ApiResponse.success(data=NoteResponse(id=result.id, title=result.title, content=result.content))
+    return ApiResponse.success(
+        data=NoteResponse(id=result.id, title=result.title, content=result.content)
+    )

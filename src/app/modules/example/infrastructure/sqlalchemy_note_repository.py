@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.modules.example.domain.note import Note
 from app.modules.example.domain.note_repository import NoteRepository
 from app.shared_kernel.infrastructure.sqlalchemy_repository import SqlAlchemyRepository
+
 from .models.note_model import NoteModel
 
 

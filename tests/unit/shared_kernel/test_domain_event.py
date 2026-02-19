@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.shared_kernel.domain.domain_event import DomainEvent
 
@@ -18,12 +18,12 @@ class TestDomainEvent:
         event = FakeEvent(entity_id=42)
         try:
             event.entity_id = 99  # type: ignore[misc]
-            assert False, "Should raise FrozenInstanceError"
+            raise AssertionError("Should raise FrozenInstanceError")
         except AttributeError:
             pass
 
     def test_equality_by_value(self) -> None:
-        ts = datetime.now(timezone.utc)
+        ts = datetime.now(UTC)
         a = FakeEvent(entity_id=1, occurred_at=ts)
         b = FakeEvent(entity_id=1, occurred_at=ts)
         assert a == b

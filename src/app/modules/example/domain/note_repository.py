@@ -2,6 +2,7 @@ from abc import abstractmethod
 from uuid import UUID
 
 from app.shared_kernel.domain.repository import Repository
+
 from .note import Note
 
 

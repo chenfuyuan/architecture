@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from app.shared_kernel.domain.aggregate_root import AggregateRoot
 from app.shared_kernel.domain.domain_event import DomainEvent
