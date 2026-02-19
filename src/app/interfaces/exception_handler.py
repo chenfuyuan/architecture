@@ -1,8 +1,18 @@
+import traceback
+
 from fastapi import Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from src.app.interfaces.response import ApiResponse
-from src.app.shared_kernel.domain.exception import DomainException, NotFoundException, ValidationException
+
+from app.interfaces.response import ApiResponse
+from app.shared_kernel.domain.exception import (
+    DomainException,
+    NotFoundException,
+    ValidationException,
+)
+from app.shared_kernel.infrastructure.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 async def domain_exception_handler(request: Request, exc: DomainException) -> JSONResponse:
@@ -17,7 +27,9 @@ async def domain_exception_handler(request: Request, exc: DomainException) -> JS
     return JSONResponse(content=response.model_dump(), status_code=status_code)
 
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+async def validation_exception_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
     errors = exc.errors()
     error_messages = []
     for err in errors:
@@ -30,5 +42,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    response = ApiResponse.error(code=status.HTTP_500_INTERNAL_SERVER_ERROR, message="Internal server error")
+    logger.error("Unhandled exception", exc_info=True, traceback=traceback.format_exc())
+    response = ApiResponse.error(
+        code=status.HTTP_500_INTERNAL_SERVER_ERROR, message="Internal server error"
+    )
     return JSONResponse(content=response.model_dump(), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
