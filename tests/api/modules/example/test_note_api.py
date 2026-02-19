@@ -1,4 +1,5 @@
 """Example 模块 notes 接口测试：创建、查询."""
+
 from httpx import AsyncClient
 
 
@@ -41,7 +42,5 @@ class TestNoteApi:
         assert resp.status_code == 422
 
     async def test_get_note_not_found_returns_404(self, api_client: AsyncClient) -> None:
-        resp = await api_client.get(
-            "/api/v1/notes/00000000-0000-0000-0000-000000000000"
-        )
+        resp = await api_client.get("/api/v1/notes/00000000-0000-0000-0000-000000000000")
         assert resp.status_code == 404

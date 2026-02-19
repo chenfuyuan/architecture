@@ -41,6 +41,7 @@ make test             # pytest tests/ -v
 make lint             # ruff check
 make format           # ruff format + fix
 make type-check       # mypy src/
+make ci               # 与 CI 一致：lint + format check + type-check + test（提交前运行）
 make migrate          # alembic upgrade head
 make migrate-create msg="描述"
 make new-module name=<模块名>  # 从 example 生成新模块脚手架，见 docs/scaffold-new-module.md
@@ -65,9 +66,13 @@ make docker-up        # docker compose up -d --build
 
 ## 验证（提交前必须通过）
 
+与 GitHub Actions CI 一致，提交/推送前本地跑一遍：
+
 ```bash
-make test && make lint && make type-check
+make ci
 ```
+
+等价于：`ruff check` + `ruff format --check` + `mypy` + `pytest`。也可拆开：`make test && make lint && make type-check`，但 `make ci` 会多检查 `ruff format --check`，与 CI 完全一致。
 
 ## 参考文档
 
