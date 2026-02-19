@@ -1,4 +1,5 @@
 import traceback
+from typing import Any
 
 from fastapi import Request, status
 from fastapi.exceptions import RequestValidationError
@@ -23,7 +24,7 @@ async def domain_exception_handler(request: Request, exc: DomainException) -> JS
     else:
         status_code = status.HTTP_400_BAD_REQUEST
 
-    response = ApiResponse.error(code=status_code, message=exc.message)
+    response: ApiResponse[Any] = ApiResponse.error(code=status_code, message=exc.message)
     return JSONResponse(content=response.model_dump(), status_code=status_code)
 
 
@@ -37,7 +38,9 @@ async def validation_exception_handler(
         error_messages.append(f"{loc}: {err['msg']}")
 
     message = "; ".join(error_messages) if error_messages else "Validation error"
-    response = ApiResponse.error(code=status.HTTP_422_UNPROCESSABLE_ENTITY, message=message)
+    response: ApiResponse[Any] = ApiResponse.error(
+        code=status.HTTP_422_UNPROCESSABLE_ENTITY, message=message
+    )
     return JSONResponse(
         content=response.model_dump(), status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
     )
@@ -45,7 +48,7 @@ async def validation_exception_handler(
 
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     logger.error("Unhandled exception", exc_info=True, traceback=traceback.format_exc())
-    response = ApiResponse.error(
+    response: ApiResponse[Any] = ApiResponse.error(
         code=status.HTTP_500_INTERNAL_SERVER_ERROR, message="Internal server error"
     )
     return JSONResponse(

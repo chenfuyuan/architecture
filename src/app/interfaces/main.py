@@ -1,8 +1,10 @@
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
+from typing import cast
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from starlette.responses import Response
 
 from app.config import settings
 from app.interfaces.exception_handler import (
@@ -70,8 +72,11 @@ app = FastAPI(
 
 setup_middleware(app)
 
-app.add_exception_handler(DomainException, domain_exception_handler)
-app.add_exception_handler(RequestValidationError, validation_exception_handler)
+_ExceptionHandler = Callable[..., Awaitable[Response]]
+app.add_exception_handler(DomainException, cast(_ExceptionHandler, domain_exception_handler))
+app.add_exception_handler(
+    RequestValidationError, cast(_ExceptionHandler, validation_exception_handler)
+)
 app.add_exception_handler(Exception, general_exception_handler)
 
 app.include_router(note_router, prefix="/api/v1")

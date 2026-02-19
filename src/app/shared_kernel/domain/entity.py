@@ -12,7 +12,7 @@ class Entity(ABC, Generic[ID]):
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, type(self)):
             return False
-        return self.id == other.id
+        return bool(self.id == other.id)
 
     def __hash__(self) -> int:
         return hash((type(self), self.id))

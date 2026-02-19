@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from typing import cast
 
 from fastapi import Request
 
@@ -8,11 +9,11 @@ from app.shared_kernel.infrastructure.sqlalchemy_unit_of_work import SqlAlchemyU
 
 
 def get_db(request: Request) -> Database:
-    return request.app.state.db
+    return cast(Database, request.app.state.db)
 
 
 def get_mediator(request: Request) -> Mediator:
-    return request.app.state.mediator
+    return cast(Mediator, request.app.state.mediator)
 
 
 async def get_uow(request: Request) -> AsyncGenerator[SqlAlchemyUnitOfWork, None]:
