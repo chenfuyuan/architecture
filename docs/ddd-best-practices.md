@@ -299,9 +299,9 @@ class OrderResponse(BaseModel):
 ## 7. 新模块开发速查
 
 1. **定义领域模型** — `domain/` 下创建聚合根、事件、仓储接口
-2. **写单元测试** — `tests/unit/` 验证领域行为
+2. **写领域单元测试** — `tests/unit/modules/<name>/domain/` 验证领域行为
 3. **写 Command/Query + Handler** — `application/` 下编排用例
-4. **写 Handler 单元测试** — mock 仓储验证编排逻辑
+4. **写 Handler 单元测试** — `tests/unit/modules/<name>/application/`，mock 仓储验证编排逻辑
 5. **写 Infrastructure** — `infrastructure/` 实现 ORM Model + Repository
 6. **写 API 层** — `interfaces/api/` 定义 Router + 请求/响应模型
 7. **注册** — `main.py` 中注册 handler + 挂载 router

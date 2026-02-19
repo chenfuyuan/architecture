@@ -210,8 +210,9 @@ FROM python:3.11-slim
 - mock Mediator factory
 
 **示例测试：**
-- `tests/unit/test_note.py` — 测试 Note 实体创建和领域事件
-- `tests/integration/test_create_note.py` — 测试完整的命令处理流程
+- `tests/unit/modules/example/domain/test_note.py` — 测试 Note 实体创建和领域事件
+- `tests/unit/modules/example/application/test_create_note_handler.py` — 测试命令处理编排
+- `tests/integration/test_sqlalchemy_uow.py` — 测试 UoW 与数据库协作
 
 ---
 
@@ -275,9 +276,13 @@ project/
 └── tests/
     ├── conftest.py
     ├── unit/
-    │   └── test_note.py
+    │   ├── shared_kernel/
+    │   └── modules/
+    │       └── example/
+    │           ├── domain/          # 领域测试，如 test_note.py
+    │           └── application/    # 应用层测试，如 test_create_note_handler.py
     └── integration/
-        └── test_create_note.py
+        └── test_sqlalchemy_uow.py
 ```
 
 ---

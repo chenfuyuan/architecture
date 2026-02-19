@@ -8,6 +8,8 @@ globs: tests/**/*.py
 ## 目录
 
 - `tests/unit/` — 领域逻辑，纯 Python，无外部依赖
+  - `shared_kernel/` — 对应 `app/shared_kernel/`
+  - `modules/<name>/` — 对应 `app/modules/<name>/`，**模块内按子目录**：`domain/`、`application/`（与源码一致）
 - `tests/integration/` — 多层协作，使用测试数据库（aiosqlite）
 
 ## TDD 流程

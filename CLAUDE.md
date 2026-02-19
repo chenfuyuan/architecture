@@ -56,6 +56,8 @@ make docker-up        # docker compose up -d --build
 ## 测试
 
 - `tests/unit/` — 纯领域逻辑，mock 外部依赖
+  - `shared_kernel/` — 对应 `app/shared_kernel/`
+  - `modules/<name>/` — 对应 `app/modules/<name>/`，**模块内按子目录**：`domain/`、`application/`（与源码一致）
 - `tests/integration/` — 多层协作，aiosqlite 内存数据库
 - 运行: `python -m pytest tests/ -v`
 

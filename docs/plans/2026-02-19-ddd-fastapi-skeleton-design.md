@@ -130,13 +130,13 @@ project-skeleton/
 │           └── response.py
 │
 ├── tests/
-│   ├── __init__.py
 │   ├── conftest.py
-│   ├── fixtures/
-│   │   ├── __init__.py
-│   │   └── db.py
 │   ├── unit/
-│   │   └── ...
+│   │   ├── shared_kernel/
+│   │   └── modules/
+│   │       └── <name>/
+│   │           ├── domain/      # 领域测试
+│   │           └── application/ # 应用层测试
 │   └── integration/
 │       └── ...
 │
@@ -236,10 +236,11 @@ modules/[module_name]/
 - `response.py` - 统一响应格式定义
 
 ### 5.6 tests/ - 测试目录
-- `conftest.py` - pytest 全局配置
-- `fixtures/` - 测试 fixtures
-- `unit/` - 单元测试（测试领域逻辑，不依赖外部）
-- `integration/` - 集成测试（测试多层协作）
+- `conftest.py` - pytest 全局 fixture（如 mock UoW）
+- `unit/` - 单元测试（纯领域/编排逻辑，mock 外部依赖）
+  - `shared_kernel/` - 对应 `app/shared_kernel/`
+  - `modules/<name>/` - 对应 `app/modules/<name>/`，**模块内按子目录**：`domain/`、`application/`（与源码一致）
+- `integration/` - 集成测试（多层协作，如 aiosqlite 内存库）
 
 ### 5.7 migrations/ - 数据库迁移目录
 - `env.py` - Alembic 环境配置
