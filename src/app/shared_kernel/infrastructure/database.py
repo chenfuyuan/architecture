@@ -1,5 +1,6 @@
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
@@ -19,6 +20,11 @@ class Database:
             class_=AsyncSession,
             expire_on_commit=False,
         )
+
+    @property
+    def engine(self) -> AsyncEngine:
+        """Exposed for tests/migrations that need to run DDL (e.g. create_all)."""
+        return self._engine
 
     @property
     def session_factory(self) -> async_sessionmaker[AsyncSession]:

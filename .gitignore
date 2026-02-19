@@ -54,6 +54,7 @@ Thumbs.db
 htmlcov/
 .tox/
 .hypothesis/
+file:testapi
 
 # Tools
 .mypy_cache/

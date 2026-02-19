@@ -59,6 +59,7 @@ make docker-up        # docker compose up -d --build
   - `shared_kernel/` — 对应 `app/shared_kernel/`
   - `modules/<name>/` — 对应 `app/modules/<name>/`，**模块内按子目录**：`domain/`、`application/`（与源码一致）
 - `tests/integration/` — 多层协作，aiosqlite 内存数据库
+- `tests/api/` — 接口测试，HTTP 调 FastAPI，内存 SQLite，示例见 `tests/api/modules/example/`
 - 运行: `python -m pytest tests/ -v`
 
 ## 验证（提交前必须通过）

@@ -11,6 +11,7 @@ globs: tests/**/*.py
   - `shared_kernel/` — 对应 `app/shared_kernel/`
   - `modules/<name>/` — 对应 `app/modules/<name>/`，**模块内按子目录**：`domain/`、`application/`（与源码一致）
 - `tests/integration/` — 多层协作，使用测试数据库（aiosqlite）
+- `tests/api/` — 接口测试：httpx + ASGITransport 调 FastAPI，conftest 注入内存 SQLite 与 mediator，按模块 `modules/<name>/` 组织
 
 ## TDD 流程
 
@@ -35,6 +36,12 @@ globs: tests/**/*.py
 
 - 使用 `aiosqlite` 内存数据库
 - 通过 `conftest.py` 中的 fixture 提供 session_factory / UoW
+
+## 接口测试（tests/api/）
+
+- 使用 `api_client` fixture：注入内存 SQLite 与 mediator，不跑真实 lifespan
+- `httpx.AsyncClient` + `ASGITransport(app=app)` 调 HTTP
+- 示例：`tests/api/modules/example/test_note_api.py`（POST 创建、GET 查询、校验、404）
 
 ## 反模式
 
